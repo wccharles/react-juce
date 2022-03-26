@@ -105,7 +105,7 @@ namespace reactjuce
                 throw std::invalid_argument("Invalid prop value. Prop \'scroll-on-drag\' must be a bool.");
 
             const bool scrollOnDrag = props[scrollOnDragProp];
-            viewport.setScrollOnDragEnabled(scrollOnDrag);
+            viewport.setScrollOnDragMode(scrollOnDrag ? ScrollViewViewport::ScrollOnDragMode::all : ScrollViewViewport::ScrollOnDragMode::never);
         }
     }
 

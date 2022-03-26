@@ -189,6 +189,7 @@ namespace reactjuce
 
         juce::var evaluateBytecode(const juce::File &code)
         {
+            juce::ignoreUnused(code);
             throw Error("Duktape engine does not currently support bytecode evaluation");
         }
 

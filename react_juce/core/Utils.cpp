@@ -28,8 +28,8 @@ namespace reactjuce
             //If object we assume it's a linear gradient
             if(colorVariant.isObject()) {
                 auto linearGradientObj = juce::JSON::parse(juce::JSON::toString(colorVariant));
-                int deg = linearGradientObj.getProperty("angle", juce::var());
-                double radians = deg * (juce::MathConstants<double>::pi / 180.0);
+                int degrees = linearGradientObj.getProperty("angle", juce::var());
+                double radians = degrees * (juce::MathConstants<double>::pi / 180.0);
                 auto colorStops = linearGradientObj.getProperty("colours", juce::var()).getArray();
                 double maximumPercent = colorStops->getFirst().getProperty("position", juce::var());
                 double minimumPercent = colorStops->getFirst().getProperty("position", juce::var());
@@ -81,7 +81,7 @@ namespace reactjuce
                 int width = b.getWidth();
                 int height = b.getHeight();
                 juce::Array<int> centerPoint{width/2, height/2};
-                auto getEdgePointsFromAngle = [](int width, int height, int deg){
+                auto getEdgePointsFromAngle = [](int w, int h, int deg){
                     double twoPI = juce::MathConstants<double>::twoPi;
                     double theta = (360 - (deg + 270))  * juce::MathConstants<double>::pi / 180;
                     while (theta < -juce::MathConstants<double>::pi) {
@@ -90,7 +90,7 @@ namespace reactjuce
                     while (theta > juce::MathConstants<double>::pi) {
                         theta -= twoPI;
                     }
-                    double rectAtan = atan2(height, width);
+                    double rectAtan = atan2(h, w);
                     double tanTheta = tan(theta);
                     int region;
                     if ((theta > -rectAtan) && (theta <= rectAtan)) {
@@ -102,8 +102,8 @@ namespace reactjuce
                     } else {
                         region = 4;
                     }
-                    double xEdge = width / 2;
-                    double yEdge = height / 2;
+                    double xEdge = w/ 2;
+                    double yEdge = h / 2;
                     int xFactor = 1;
                     int yFactor = 1;
 
@@ -115,20 +115,20 @@ namespace reactjuce
                     }
 
                     if ((region == 1) || (region == 3)) {
-                        xEdge += xFactor * (width / 2.);
-                        yEdge += yFactor * (width / 2.) * tanTheta;
+                        xEdge += xFactor * (w / 2.);
+                        yEdge += yFactor * (w / 2.) * tanTheta;
                     }
                     else {
-                        xEdge += xFactor * (height / (2. * tanTheta));
-                        yEdge += yFactor * (height /  2.);
+                        xEdge += xFactor * (h / (2. * tanTheta));
+                        yEdge += yFactor * (h /  2.);
                     }
-                    juce::Array<int> edgePoints{xEdge, yEdge};
+                    juce::Array<int> edgePoints{(int)xEdge, (int)yEdge};
                     return edgePoints;
                 };
                 //Calculate the gradient Line End point coordinates
-                juce::Array<int> edgePoint1 = getEdgePointsFromAngle(width, height, deg + 180);
+                juce::Array<int> edgePoint1 = getEdgePointsFromAngle(width, height, degrees + 180);
                 x1 = edgePoint1[0]; y1 = edgePoint1[1];
-                juce::Array<int> edgePoint2 = getEdgePointsFromAngle(width, height, deg);
+                juce::Array<int> edgePoint2 = getEdgePointsFromAngle(width, height, degrees);
                 x2 = edgePoint2[0]; y2 = edgePoint2[1];
                 double gradientLineDistance = abs(b.getWidth() * sin(radians) + abs(b.getHeight() * cos(radians)));
                 double edgePoint1CenterDist = sqrt(pow((x1 - centerPoint[0]), 2) + pow((y1 - centerPoint[1]), 2));
@@ -136,17 +136,17 @@ namespace reactjuce
                 double halfGradientDistance = gradientLineDistance/2;
                 double distanceRatio1 = halfGradientDistance/edgePoint1CenterDist;
                 double distanceRatio2 = halfGradientDistance/edgePoint2CenterDist;
-                x1 = ((1 - distanceRatio1) * centerPoint[0]) + (distanceRatio1 * x1);
-                y1 = ((1 - distanceRatio1) * centerPoint[1]) + (distanceRatio1 * y1);
-                x2 = ((1 - distanceRatio2) * centerPoint[0]) + (distanceRatio2 * x2);
-                y2 = ((1 - distanceRatio2) * centerPoint[1]) + (distanceRatio2 * y2);
+                x1 = ((1 - static_cast<int>(distanceRatio1)) * centerPoint[0]) + (static_cast<int>(distanceRatio1) * x1);
+                y1 = ((1 - static_cast<int>(distanceRatio1)) * centerPoint[1]) + (static_cast<int>(distanceRatio1) * y1);
+                x2 = ((1 - static_cast<int>(distanceRatio2)) * centerPoint[0]) + (static_cast<int>(distanceRatio2) * x2);
+                y2 = ((1 - static_cast<int>(distanceRatio2)) * centerPoint[1]) + (static_cast<int>(distanceRatio2) * y2);
                 //Gradient line Points
                 int glX1 = x1; int glX2 = x2; int glY1 = y1; int glY2 = y2;
                 //Offset the gradient line length with min max extension percent
-                x1 = ((1 - (negativeExtensionPercent * -1)) * glX1) + ((negativeExtensionPercent * -1) * glX2);
-                y1 = ((1 - (negativeExtensionPercent * -1)) * glY1) + ((negativeExtensionPercent * -1) * glY2);
-                x2 = ((1 - (positiveExtensionPercent * -1)) * glX2) + ((positiveExtensionPercent * -1) * glX1);
-                y2 = ((1 - (positiveExtensionPercent * -1)) * glY2) + ((positiveExtensionPercent * -1) * glY1);
+                x1 = ((1 - (static_cast<int>(negativeExtensionPercent) * -1)) * glX1) + ((static_cast<int>(negativeExtensionPercent) * -1) * glX2);
+                y1 = ((1 - (static_cast<int>(negativeExtensionPercent) * -1)) * glY1) + ((static_cast<int>(negativeExtensionPercent) * -1) * glY2);
+                x2 = ((1 - (static_cast<int>(positiveExtensionPercent) * -1)) * glX2) + ((static_cast<int>(positiveExtensionPercent) * -1) * glX1);
+                y2 = ((1 - (static_cast<int>(positiveExtensionPercent) * -1)) * glY2) + ((static_cast<int>(positiveExtensionPercent) * -1) * glY1);
                 juce::ColourGradient gradient = juce::ColourGradient (minColor, x1, y1, maxColor, x2, y2,false);
                 for (auto& colors : colorStopsObj->getProperties())
                 {
