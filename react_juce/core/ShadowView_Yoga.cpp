@@ -1,14 +1,5 @@
 #include "ShadowView.h"
-
-JUCE_BEGIN_IGNORE_WARNINGS_GCC_LIKE ("-Wparentheses",
-                                     "-Wextra-tokens",
-                                     "-Wcomment",
-                                     "-Wconversion",
-                                     "-Wunused-parameter")
-
 #include "YogaImplInclude.cpp"
-
-JUCE_END_IGNORE_WARNINGS_GCC_LIKE
 
 
 //==============================================================================
