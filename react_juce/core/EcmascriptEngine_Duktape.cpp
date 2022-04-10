@@ -24,6 +24,7 @@
 
 #if _MSC_VER
 #pragma warning(push)
+#pragma warning(disable: 2220)
 #elif __clang__
 #pragma clang diagnostic push
  #pragma clang diagnostic ignored "-Wextra-semi"
@@ -69,6 +70,7 @@
 #include <duktape/examples/debug-trans-socket/duk_trans_socket.h>
 
 #if _MSC_VER
+#pragma warning(pop)
 #elif __clang__
 #pragma clang diagnostic pop
 #elif __GNUC__
