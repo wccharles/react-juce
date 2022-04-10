@@ -24,7 +24,7 @@
 
 #if _MSC_VER
 #pragma warning(push)
-#pragma warning(disable: 2220)
+#pragma warning(disable : 4146)
 #elif __clang__
 #pragma clang diagnostic push
  #pragma clang diagnostic ignored "-Wextra-semi"
