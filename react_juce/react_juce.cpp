@@ -26,7 +26,6 @@
 #endif
 
 JUCE_BEGIN_IGNORE_WARNINGS_GCC_LIKE("-Wshadow")
-JUCE_BEGIN_IGNORE_WARNINGS_MSVC(2220)
 
 #include "core/CanvasView.cpp"
 #include "core/ReactApplicationRoot.cpp"
@@ -40,4 +39,3 @@ JUCE_BEGIN_IGNORE_WARNINGS_MSVC(2220)
 #include "core/Utils.cpp"
 
 JUCE_END_IGNORE_WARNINGS_GCC_LIKE
-JUCE_END_IGNORE_WARNINGS_MSVC
