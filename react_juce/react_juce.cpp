@@ -25,6 +25,8 @@
     #include "core/GenericEditor.cpp"
 #endif
 
+JUCE_BEGIN_IGNORE_WARNINGS_GCC_LIKE("-Wshadow")
+
 #include "core/CanvasView.cpp"
 #include "core/ReactApplicationRoot.cpp"
 #include "core/ShadowView.cpp"
@@ -35,3 +37,5 @@
 #include "core/ScrollView.cpp"
 #include "core/ImageView.cpp"
 #include "core/Utils.cpp"
+
+JUCE_END_IGNORE_WARNINGS_GCC_LIKE
